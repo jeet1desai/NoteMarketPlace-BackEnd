@@ -11,13 +11,17 @@ export const isPassword = (password) => {
   return re.test(password);
 };
 
-
-export const checkSystemConfigForm = (body, files) => {
-  if(!files.note_image || !files.profile_image || !body.email || !body.phone){
-    return false;
-  } 
-  if(!isEmail(body.email)){
+export const checkSystemConfigForm = ({
+  note_image,
+  profile_image,
+  email,
+  phone,
+}) => {
+  if (!note_image || !profile_image || !email || !phone) {
     return false;
   }
-  return true
-}
+  if (!isEmail(email)) {
+    return false;
+  }
+  return true;
+};
