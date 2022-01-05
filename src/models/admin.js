@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { pool } from './pool';
 
 class Admin {
@@ -19,9 +21,42 @@ class Admin {
     return this.pool.query(query);
   }
 
+  async addSystemConfig(values) {
+    const { email, phone, profile, note, facebook, twitter, linkedin, user } =
+      values;
+    const time = moment().format();
+    let query = `INSERT INTO 
+      SystemConfigurations(Email, PhoneNumber, ProfilePicture, NotePicture, 
+        FacebookURL, TwitterURL, LinkedInURL, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
+      VALUES('${email}', '${phone}', '${profile}', '${note}', '${facebook}', '${twitter}', '${linkedin}', 
+        '${time}', ${user}, '${time}', ${user},  ${true}) RETURNING *
+    `;
+    return this.pool.query(query);
+  }
 
+  async deleteSystemConfig(id) {
+    let query = `DELETE FROM SystemConfigurations WHERE id = ${id}`;
+    return this.pool.query(query);
+  }
 
-
+  async addAdmin({
+    firstName,
+    lastName,
+    email,
+    password,
+    countryCode,
+    phone,
+    user,
+  }) {
+    const time = moment().format();
+    let query = `INSERT INTO 
+      users(RoleID, FirstName, LastName, Email, Password, IsEmailVerified, 	PhoneCountryCode,
+        PhoneNumber, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
+      VALUES(${2}, '${firstName}', '${lastName}', '${email}', '${password.toString()}', ${false}, 
+        '${countryCode}', '${phone}', '${time}', ${user}, '${time}', ${user}, ${true}) RETURNING *
+    `;
+    return this.pool.query(query);
+  }
 }
 
 export default Admin;
