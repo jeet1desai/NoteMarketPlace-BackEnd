@@ -1,28 +1,18 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 
 import Auth from '../models/Auth';
-import { secretKey, emailPass, emailUser, aEmail } from '../settings';
+import { secretKey, aEmail } from '../settings';
 import { isEmail, isPassword } from '../validation';
 import { emailConfirmation } from '../templates';
-
-const sAdminTransport = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: emailUser,
-    pass: emailPass,
-  },
-});
+import { sAdminTransport } from '../helper';
 
 const authModel = new Auth();
 export const login = async (req, res) => {
   const { email, password, isRememberMe } = req.body;
 
   try {
-    if (!isEmail(email) || !isPassword(password)) {
+    if (!isEmail(email)) {
       return res.status(404).json({ message: 'Enter valid credential' });
     }
 
