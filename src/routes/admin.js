@@ -2,30 +2,30 @@ import express from 'express';
 import multer from 'multer';
 
 const adminRouter = express.Router();
-let upload = multer()
+let upload = multer();
 
 import {
-  addAdmin,
+  getSystemConfig,
   addSystemConfig,
-  deleteAdmin,
+  deleteSystemConfig,
+  addAdmin,
   editAdmin,
   getAdmin,
   getAdmins,
-  getSystemConfig,
+  deleteAdmin,
+  inactiveAdmin,
 } from '../controllers';
 import { checkToken } from '../middleware';
 
 adminRouter.get('/system-config', checkToken, getSystemConfig);
-const cpUpload = upload.fields([
-  { name: 'note_image', maxCount: 1 },
-  { name: 'profile_image', maxCount: 1 },
-]);
-adminRouter.post('/system-config', checkToken, cpUpload, addSystemConfig);
+adminRouter.post('/system-config', checkToken, addSystemConfig);
+adminRouter.delete('/system-config/:id', deleteSystemConfig);
 
-adminRouter.get('/admin', checkToken, getAdmins);
-adminRouter.get('/admin/1', checkToken, getAdmin);
 adminRouter.post('/admin', checkToken, addAdmin);
-adminRouter.put('/admin/1', checkToken, editAdmin);
-adminRouter.delete('/admin/1', checkToken, deleteAdmin);
+adminRouter.put('/admin/:uid', checkToken, editAdmin);
+adminRouter.delete('/admin/:uid', checkToken, inactiveAdmin);
+adminRouter.delete('/delete/admin/:id', deleteAdmin);
+adminRouter.get('/admin/:uid', checkToken, getAdmin);
+adminRouter.get('/admins', checkToken, getAdmins);
 
 export default adminRouter;
