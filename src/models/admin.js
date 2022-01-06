@@ -57,6 +57,33 @@ class Admin {
     `;
     return this.pool.query(query);
   }
+
+  async updateAdmin({
+    firstName,
+    lastName,
+    email,
+    countryCode,
+    phone,
+    user,
+    sAdmin,
+  }) {
+    const time = moment().format();
+    let query = `UPDATE users SET 
+      FirstName = '${firstName}', LastName = '${lastName}', Email = '${email}', 
+      PhoneCountryCode = '${countryCode}', PhoneNumber = '${phone}', ModifiedDate = '${time}', 
+      ModifiedBy = ${sAdmin} WHERE id = ${user} RETURNING *
+    `;
+    return this.pool.query(query);
+  }
+
+  async inactiveAdmin(uid, aid, flag){
+    const time = moment().format();
+    let query = `UPDATE users SET 
+      ModifiedDate = '${time}', ModifiedBy = ${aid}, IsActive = ${flag} WHERE id = ${uid} RETURNING *
+    `;
+    return this.pool.query(query);
+  }
+
 }
 
 export default Admin;
