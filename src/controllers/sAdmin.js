@@ -171,6 +171,9 @@ export const editAdmin = async (req, res) => {
     }
 
     const user = await adminModel.getUserInfo('id', uid);
+    if (user.rowCount === 0) {
+      return res.status(404).json({ message: 'User not available' });
+    }
     if (user.rows[0].roleid !== 2) {
       return res.status(404).json({ message: 'Not a valid user' });
     }
@@ -199,22 +202,20 @@ export const editAdmin = async (req, res) => {
       user: uid,
     };
 
-    console.log(value);
-    // const admin = await adminModel.addAdmin(value);
-    // const resp = {
-    //   id: admin.rows[0].id,
-    //   email: admin.rows[0].email,
-    //   firstName: admin.rows[0].firstname,
-    //   lastName: admin.rows[0].lastname,
-    //   role: admin.rows[0].roleid,
-    //   countryCode: admin.rows[0].phonecountrycode,
-    //   phone: admin.rows[0].phonenumber,
-    //   isEmailVerified: admin.rows[0].isemailverified,
-    //   isActive: admin.rows[0].isactive,
-    //   profilePicture: admin.rows[0].profilepicture,
-    // };
-    // return res.status(200).json(resp);
-    res.status(200).json({ message: testEnvironmentVariable });
+    const admin = await adminModel.updateAdmin(value);
+    const resp = {
+      id: admin.rows[0].id,
+      email: admin.rows[0].email,
+      firstName: admin.rows[0].firstname,
+      lastName: admin.rows[0].lastname,
+      role: admin.rows[0].roleid,
+      countryCode: admin.rows[0].phonecountrycode,
+      phone: admin.rows[0].phonenumber,
+      isEmailVerified: admin.rows[0].isemailverified,
+      isActive: admin.rows[0].isactive,
+      profilePicture: admin.rows[0].profilepicture,
+    };
+    return res.status(200).json(resp);
   } catch (error) {
     return res.status(500).json({
       message: error.stack,
@@ -223,9 +224,50 @@ export const editAdmin = async (req, res) => {
 };
 
 export const inactiveAdmin = async (req, res) => {
-  res.status(200).json({ message: 'inactive' });
+  const { id } = req;
+  const { uid } = req.params;
+
+  try {
+    const sAdmin = await adminModel.getUserInfo('id', id);
+    if (sAdmin.rows[0].roleid !== 3) {
+      return res.status(404).json({ message: 'Not a valid user' });
+    }
+
+    const user = await adminModel.getUserInfo('id', uid);
+    if (user.rowCount === 0) {
+      return res.status(404).json({ message: 'User not available' });
+    }
+    if (user.rows[0].roleid !== 2) {
+      return res.status(404).json({ message: 'Not a valid user' });
+    }
+
+    const admin = await adminModel.inactiveAdmin(uid, id, false);
+    const resp = {
+      id: admin.rows[0].id,
+      email: admin.rows[0].email,
+      firstName: admin.rows[0].firstname,
+      lastName: admin.rows[0].lastname,
+      role: admin.rows[0].roleid,
+      countryCode: admin.rows[0].phonecountrycode,
+      phone: admin.rows[0].phonenumber,
+      isEmailVerified: admin.rows[0].isemailverified,
+      isActive: admin.rows[0].isactive,
+      profilePicture: admin.rows[0].profilepicture,
+    };
+    return res.status(200).json(resp);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
 };
 
 export const deleteAdmin = async (req, res) => {
-  res.status(200).json({ message: 'delete' });
+  try {
+    res.status(200).json({ message: 'delete' });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
 };
