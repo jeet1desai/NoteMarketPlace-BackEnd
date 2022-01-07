@@ -1,3 +1,4 @@
 export * from './home';
 export * from './auth';
-export * from './sAdmin';
+export * from './super-admin';
+export * from './not';
