@@ -11,13 +11,18 @@ class Admin {
     );
   }
 
-  async getUserInfo(column, value) {
-    let query = `SELECT * FROM users WHERE ${column} = '${value}'`;
+  async getSAdminInfoByID(id) {
+    let query = `SELECT * FROM Users WHERE ID = ${id} AND RoleID = 3`;
     return this.pool.query(query);
   }
 
-  async getSystemConfig() {
-    let query = `SELECT * FROM SystemConfigurations ORDER BY id DESC LIMIT 1`;
+  async getAdminInfoByID(id) {
+    let query = `SELECT * FROM Users WHERE ID = ${id} AND RoleID = 2`;
+    return this.pool.query(query);
+  }
+
+  async getInfoByEmail(email) {
+    let query = `SELECT * FROM Users WHERE Email = '${email}'`;
     return this.pool.query(query);
   }
 
@@ -34,8 +39,8 @@ class Admin {
     return this.pool.query(query);
   }
 
-  async deleteSystemConfig(id) {
-    let query = `DELETE FROM SystemConfigurations WHERE id = ${id}`;
+  async getSystemConfig() {
+    let query = `SELECT * FROM SystemConfigurations ORDER BY ID DESC LIMIT 1`;
     return this.pool.query(query);
   }
 
@@ -50,10 +55,11 @@ class Admin {
   }) {
     const time = moment().format();
     let query = `INSERT INTO 
-      users(RoleID, FirstName, LastName, Email, Password, IsEmailVerified, 	PhoneCountryCode,
+      Users(RoleID, FirstName, LastName, Email, Password, IsEmailVerified, 	PhoneCountryCode,
         PhoneNumber, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
       VALUES(${2}, '${firstName}', '${lastName}', '${email}', '${password.toString()}', ${false}, 
-        '${countryCode}', '${phone}', '${time}', ${user}, '${time}', ${user}, ${true}) RETURNING *
+        '${countryCode}', '${phone}', '${time}', ${user}, '${time}', ${user}, ${true}) 
+      RETURNING ID, FirstName, LastName, Email, PhoneCountryCode, PhoneNumber
     `;
     return this.pool.query(query);
   }
@@ -68,22 +74,39 @@ class Admin {
     sAdmin,
   }) {
     const time = moment().format();
-    let query = `UPDATE users SET 
-      FirstName = '${firstName}', LastName = '${lastName}', Email = '${email}', 
-      PhoneCountryCode = '${countryCode}', PhoneNumber = '${phone}', ModifiedDate = '${time}', 
-      ModifiedBy = ${sAdmin} WHERE id = ${user} RETURNING *
+    let query = `UPDATE Users 
+      SET FirstName = '${firstName}', LastName = '${lastName}', Email = '${email}', 
+        PhoneCountryCode = '${countryCode}', PhoneNumber = '${phone}', ModifiedDate = '${time}', 
+        ModifiedBy = ${sAdmin} 
+      WHERE ID = ${user} 
+      RETURNING ID, FirstName, LastName, Email, PhoneCountryCode, PhoneNumber
     `;
     return this.pool.query(query);
   }
 
-  async inactiveAdmin(uid, aid, flag){
+  async getAllAdmin() {
+    let query = `SELECT 
+      ID, RoleID, FirstName, LastName, Email, IsActive, CreatedDate, PhoneCountryCode, PhoneNumber 
+      FROM Users WHERE RoleID = 2
+    `;
+    return this.pool.query(query);
+  }
+
+  async getAdmin(id) {
+    let query = `SELECT ID, FirstName, LastName, Email, PhoneCountryCode, PhoneNumber
+      FROM Users WHERE ID = ${id} AND RoleID = 2
+    `;
+    return this.pool.query(query);
+  }
+
+  async inactiveAdmin(uid, aid) {
     const time = moment().format();
-    let query = `UPDATE users SET 
-      ModifiedDate = '${time}', ModifiedBy = ${aid}, IsActive = ${flag} WHERE id = ${uid} RETURNING *
+    let query = `UPDATE Users SET 
+      ModifiedDate = '${time}', ModifiedBy = ${aid}, IsActive = ${false} WHERE ID = ${uid} 
+      RETURNING ID, FirstName, LastName, Email, IsActive, CreatedDate, PhoneCountryCode, PhoneNumber
     `;
     return this.pool.query(query);
   }
-
 }
 
 export default Admin;
