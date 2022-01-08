@@ -155,6 +155,48 @@ class Admin {
     `;
     return this.pool.query(query);
   }
+
+  async addType({ name, description, user }) {
+    const time = moment().format();
+    let query = `INSERT INTO 
+      NoteTypes(Name, Description, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
+      VALUES('${name}', '${description}', '${time}', ${user}, '${time}', ${user}, ${true}) 
+      RETURNING ID, Name, Description
+    `;
+    return this.pool.query(query);
+  }
+
+  async updateType({ name, description, user, id }) {
+    const time = moment().format();
+    let query = `UPDATE NoteTypes 
+      SET Name = '${name}', Description = '${description}', ModifiedDate = '${time}', 
+        ModifiedBy = ${user} WHERE ID = ${id} RETURNING ID, Name, Description
+    `;
+    return this.pool.query(query);
+  }
+
+  async getAllType() {
+    let query = `SELECT NoteTypes.ID, NoteTypes.Name, NoteTypes.Description, NoteTypes.IsActive, 
+      NoteTypes.CreatedDate, Users.FirstName, Users.LastName FROM NoteTypes INNER JOIN Users 
+      ON NoteTypes.CreatedBy = Users.ID
+    `;
+    return this.pool.query(query);
+  }
+
+  async getType(id) {
+    let query = `SELECT ID, Name, Description FROM NoteTypes WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
+
+  async inactiveType(user, id) {
+    const time = moment().format();
+    let query = `UPDATE NoteTypes SET ModifiedDate = '${time}', ModifiedBy = ${user}, IsActive = ${false} 
+      FROM Users WHERE NoteTypes.ID = ${id} AND NoteTypes.CreatedBy = Users.ID
+      RETURNING NoteTypes.ID, NoteTypes.Name, NoteTypes.Description, NoteTypes.IsActive, 
+        NoteTypes.CreatedDate, Users.FirstName, Users.LastName
+    `;
+    return this.pool.query(query);
+  }
 }
 
 export default Admin;
