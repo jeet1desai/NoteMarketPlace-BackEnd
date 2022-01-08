@@ -197,6 +197,48 @@ class Admin {
     `;
     return this.pool.query(query);
   }
+
+  async addCountry({ name, code, user }) {
+    const time = moment().format();
+    let query = `INSERT INTO 
+      Countries(Name, CountryCode, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
+      VALUES('${name}', '${code}', '${time}', ${user}, '${time}', ${user}, ${true}) 
+      RETURNING ID, Name, CountryCode
+    `;
+    return this.pool.query(query);
+  }
+
+  async updateCountry({ name, code, user, id }) {
+    const time = moment().format();
+    let query = `UPDATE Countries
+      SET Name = '${name}', CountryCode = '${code}', ModifiedDate = '${time}',
+      ModifiedBy = ${user} WHERE ID = ${id} RETURNING ID, Name, CountryCode
+    `;
+    return this.pool.query(query);
+  }
+
+  async getAllCountry() {
+    let query = `SELECT Countries.ID, Countries.Name, Countries.CountryCode, Countries.IsActive,
+      Countries.CreatedDate, Users.FirstName, Users.LastName FROM Countries INNER JOIN Users
+      ON Countries.CreatedBy = Users.ID
+    `;
+    return this.pool.query(query);
+  }
+
+  async getCountry(id) {
+    let query = `SELECT ID, Name, CountryCode FROM Countries WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
+
+  async inactiveCountry(user, id) {
+    const time = moment().format();
+    let query = `UPDATE Countries SET ModifiedDate = '${time}', ModifiedBy = ${user}, IsActive = ${false}
+      FROM Users WHERE Countries.ID = ${id} AND Countries.CreatedBy = Users.ID
+      RETURNING Countries.ID, Countries.Name, Countries.CountryCode, Countries.IsActive,
+      Countries.CreatedDate, Users.FirstName, Users.LastName
+    `;
+    return this.pool.query(query);
+  }
 }
 
 export default Admin;
