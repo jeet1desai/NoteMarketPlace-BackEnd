@@ -96,7 +96,7 @@ export const deleteCategory = async (req, res) => {
 
 export const allType = async (req, res) => {
   try {
-    const type = await notModel.NoteTypes();
+    const type = await notModel.getTypes();
     return res.status(200).json(type.rows);
   } catch (error) {
     return res.status(500).json({
@@ -110,6 +110,32 @@ export const deleteType = async (req, res) => {
   try {
     const type = await notModel.deleteType(id);
     if (type.rowCount === 0) {
+      return res.status(404).json({ message: 'Data unavailable' });
+    }
+    return res.status(200).json({ message: 'Deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+};
+
+export const allCountry = async (req, res) => {
+  try {
+    const country = await notModel.getCountry();
+    return res.status(200).json(country.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+}
+
+export const deleteCountry = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const country = await notModel.deleteCountry(id);
+    if (country.rowCount === 0) {
       return res.status(404).json({ message: 'Data unavailable' });
     }
     return res.status(200).json({ message: 'Deleted successfully' });

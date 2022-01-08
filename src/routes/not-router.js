@@ -2,9 +2,11 @@ import express from 'express';
 
 import {
   allCategory,
+  allCountry,
   allSystemConfig,
   allType,
   deleteCategory,
+  deleteCountry,
   deleteSystemConfig,
   deleteType,
   deleteUser,
@@ -26,5 +28,8 @@ router.delete('/category/:id', deleteCategory);
 
 router.get('/type/all', allType);
 router.delete('/type/:id', deleteType);
+
+router.get('/country/all', allCountry);
+router.delete('/country/:id', deleteCountry);
 
 export default router;
