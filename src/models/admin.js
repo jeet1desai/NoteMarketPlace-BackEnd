@@ -87,7 +87,7 @@ class Admin {
   async getAllAdmin() {
     let query = `SELECT 
       ID, RoleID, FirstName, LastName, Email, IsActive, CreatedDate, PhoneCountryCode, PhoneNumber 
-      FROM Users WHERE RoleID = 2
+      FROM Users WHERE RoleID = 2 ORDER BY ID
     `;
     return this.pool.query(query);
   }
@@ -104,6 +104,54 @@ class Admin {
     let query = `UPDATE Users SET 
       ModifiedDate = '${time}', ModifiedBy = ${aid}, IsActive = ${false} WHERE ID = ${uid} 
       RETURNING ID, FirstName, LastName, Email, IsActive, CreatedDate, PhoneCountryCode, PhoneNumber
+    `;
+    return this.pool.query(query);
+  }
+
+  async adminInfoByID(id) {
+    let query = `SELECT * FROM Users WHERE ID = ${id} AND (RoleID = 3 OR RoleID = 2)`;
+    return this.pool.query(query);
+  }
+
+  async addCategory({ name, description, user }) {
+    const time = moment().format();
+    let query = `INSERT INTO 
+      NoteCategories(Name, Description, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive) 
+      VALUES('${name}', '${description}', '${time}', ${user}, '${time}', ${user}, ${true}) 
+      RETURNING ID, Name, Description
+    `;
+    return this.pool.query(query);
+  }
+
+  async updateCategory({ name, description, user, id }) {
+    const time = moment().format();
+    let query = `UPDATE NoteCategories 
+      SET Name = '${name}', Description = '${description}', ModifiedDate = '${time}', 
+        ModifiedBy = ${user} WHERE ID = ${id} RETURNING ID, Name, Description
+    `;
+    return this.pool.query(query);
+  }
+
+  async getAllCategory() {
+    let query = `SELECT NoteCategories.ID, NoteCategories.Name, NoteCategories.Description,
+      NoteCategories.IsActive, NoteCategories.CreatedDate, Users.FirstName, Users.LastName
+      FROM NoteCategories INNER JOIN Users ON NoteCategories.CreatedBy = Users.ID
+    `;
+    return this.pool.query(query);
+  }
+
+  async getCategory(id) {
+    let query = `SELECT ID, Name, Description FROM NoteCategories WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
+
+  async inactiveCategory(user, id) {
+    const time = moment().format();
+    let query = `UPDATE NoteCategories SET
+      ModifiedDate = '${time}', ModifiedBy = ${user}, IsActive = ${false} 
+        FROM Users WHERE NoteCategories.ID = ${id} AND NoteCategories.CreatedBy = Users.ID
+      RETURNING NoteCategories.ID, NoteCategories.Name, NoteCategories.Description,
+        NoteCategories.IsActive, NoteCategories.CreatedDate, Users.FirstName, Users.LastName
     `;
     return this.pool.query(query);
   }
