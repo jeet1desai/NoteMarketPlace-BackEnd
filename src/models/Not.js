@@ -33,6 +33,16 @@ class Not {
     let query = `DELETE FROM SystemConfigurations WHERE ID = ${id}`;
     return this.pool.query(query);
   }
+
+  async getAllCategories() {
+    let query = `SELECT * FROM NoteCategories ORDER BY ID`;
+    return this.pool.query(query);
+  }
+
+  async deleteCategory(id) {
+    let query = `DELETE FROM NoteCategories WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
 }
 
 export default Not;

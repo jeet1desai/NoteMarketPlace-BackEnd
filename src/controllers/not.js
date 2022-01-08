@@ -67,3 +67,29 @@ export const deleteSystemConfig = async (req, res) => {
     });
   }
 };
+
+export const allCategory = async (req, res) => {
+  try {
+    const configs = await notModel.getAllCategories();
+    return res.status(200).json(configs.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+}
+
+export const deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleteConfig = await notModel.deleteCategory(id);
+    if (deleteConfig.rowCount === 0) {
+      return res.status(404).json({ message: 'Data unavailable' });
+    }
+    return res.status(200).json({ message: 'Deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+};
