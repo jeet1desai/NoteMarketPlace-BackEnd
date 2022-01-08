@@ -202,15 +202,13 @@ export const getAdmin = async (req, res) => {
         .json({ message: 'You are not valid user to perform task' });
     }
 
-    const checkIfAdminExist = await adminModel.getAdminInfoByID(uid);
+    const checkIfAdminExist = await adminModel.getAdmin(uid);
     if (checkIfAdminExist.rowCount === 0) {
       return res.status(404).json({
         message: 'This admin is not available',
       });
     }
-
-    const admin = await adminModel.getAdmin(uid);
-    return res.status(200).json(admin.rows[0]);
+    return res.status(200).json(checkIfAdminExist.rows[0]);
   } catch (error) {
     return res.status(500).json({
       message: error.stack,
