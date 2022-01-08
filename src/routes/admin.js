@@ -19,6 +19,11 @@ import {
   getType,
   getTypes,
   inactiveType,
+  addCountry,
+  editCountry,
+  getCountries,
+  getCountry,
+  inactiveCountry,
 } from '../controllers';
 import { checkToken } from '../middleware';
 
@@ -43,10 +48,10 @@ adminRouter.get('/type/all', checkToken, getTypes);
 adminRouter.get('/type/:tid', checkToken, getType);
 adminRouter.delete('/type/:tid', checkToken, inactiveType);
 
-// adminRouter.post('/', checkToken, addCountry);
-// adminRouter.put('/:uid', checkToken, editCountry);
-// adminRouter.get('/all', checkToken, getCountries);
-// adminRouter.get('/:uid', checkToken, getCountry);
-// adminRouter.delete('/:uid', checkToken, inactiveCountry);
+adminRouter.post('/country', checkToken, addCountry);
+adminRouter.put('/country/:cid', checkToken, editCountry);
+adminRouter.get('/country/all', checkToken, getCountries);
+adminRouter.get('/country/:cid', checkToken, getCountry);
+adminRouter.delete('/country/:cid', checkToken, inactiveCountry);
 
 export default adminRouter;
