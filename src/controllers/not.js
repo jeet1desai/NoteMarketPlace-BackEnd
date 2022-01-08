@@ -70,8 +70,8 @@ export const deleteSystemConfig = async (req, res) => {
 
 export const allCategory = async (req, res) => {
   try {
-    const configs = await notModel.getAllCategories();
-    return res.status(200).json(configs.rows);
+    const categories = await notModel.getAllCategories();
+    return res.status(200).json(categories.rows);
   } catch (error) {
     return res.status(500).json({
       message: error.stack,
@@ -82,8 +82,34 @@ export const allCategory = async (req, res) => {
 export const deleteCategory = async (req, res) => {
   const { id } = req.params;
   try {
-    const deleteConfig = await notModel.deleteCategory(id);
-    if (deleteConfig.rowCount === 0) {
+    const category = await notModel.deleteCategory(id);
+    if (category.rowCount === 0) {
+      return res.status(404).json({ message: 'Data unavailable' });
+    }
+    return res.status(200).json({ message: 'Deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+};
+
+export const allType = async (req, res) => {
+  try {
+    const type = await notModel.NoteTypes();
+    return res.status(200).json(type.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+}
+
+export const deleteType = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const type = await notModel.deleteType(id);
+    if (type.rowCount === 0) {
       return res.status(404).json({ message: 'Data unavailable' });
     }
     return res.status(200).json({ message: 'Deleted successfully' });

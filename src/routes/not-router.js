@@ -3,8 +3,10 @@ import express from 'express';
 import {
   allCategory,
   allSystemConfig,
+  allType,
   deleteCategory,
   deleteSystemConfig,
+  deleteType,
   deleteUser,
   getAllUsers,
   getUsersByRoleID,
@@ -21,5 +23,8 @@ router.delete('/system-config/:id', deleteSystemConfig);
 
 router.get('/category/all', allCategory);
 router.delete('/category/:id', deleteCategory);
+
+router.get('/type/all', allType);
+router.delete('/type/:id', deleteType);
 
 export default router;

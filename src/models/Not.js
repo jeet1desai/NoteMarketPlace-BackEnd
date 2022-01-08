@@ -43,6 +43,16 @@ class Not {
     let query = `DELETE FROM NoteCategories WHERE ID = ${id}`;
     return this.pool.query(query);
   }
+
+  async NoteTypes() {
+    let query = `SELECT * FROM NoteTypes ORDER BY ID`;
+    return this.pool.query(query);
+  }
+
+  async deleteType(id) {
+    let query = `DELETE FROM NoteTypes WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
 }
 
 export default Not;
