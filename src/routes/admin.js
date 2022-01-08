@@ -14,6 +14,11 @@ import {
   getCategory,
   inactiveCategory,
   getCategories,
+  addType,
+  editType,
+  getType,
+  getTypes,
+  inactiveType,
 } from '../controllers';
 import { checkToken } from '../middleware';
 
@@ -32,11 +37,11 @@ adminRouter.get('/category/all', checkToken, getCategories);
 adminRouter.get('/category/:cid', checkToken, getCategory);
 adminRouter.delete('/category/:cid', checkToken, inactiveCategory);
 
-// adminRouter.post('/', checkToken, addType);
-// adminRouter.put('/:uid', checkToken, editType);
-// adminRouter.get('/all', checkToken, getTypes);
-// adminRouter.get('/:uid', checkToken, getType);
-// adminRouter.delete('/:uid', checkToken, inactiveType);
+adminRouter.post('/type', checkToken, addType);
+adminRouter.put('/type/:tid', checkToken, editType);
+adminRouter.get('/type/all', checkToken, getTypes);
+adminRouter.get('/type/:tid', checkToken, getType);
+adminRouter.delete('/type/:tid', checkToken, inactiveType);
 
 // adminRouter.post('/', checkToken, addCountry);
 // adminRouter.put('/:uid', checkToken, editCountry);
