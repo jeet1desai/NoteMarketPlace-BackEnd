@@ -76,11 +76,15 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const sConfig = await authModel.getSystemConfig();
+    const profileImage = sConfig.rows[0].profilepicture;
+
     const value = {
       firstName,
       lastName,
       email,
       password: hashedPassword,
+      profileImage
     };
     const user = await authModel.register(value);
 
