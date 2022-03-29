@@ -24,6 +24,7 @@ import {
   getCountries,
   getCountry,
   inactiveCountry,
+  searchCategory,
 } from '../controllers';
 import { checkToken } from '../middleware';
 
@@ -36,6 +37,7 @@ adminRouter.get('/all', checkToken, getAdmins);
 adminRouter.get('/:uid', checkToken, getAdmin);
 adminRouter.delete('/:uid', checkToken, inactiveAdmin);
 
+adminRouter.get('/category/search', checkToken, searchCategory);
 adminRouter.post('/category', checkToken, addCategory);
 adminRouter.put('/category/:cid', checkToken, editCategory);
 adminRouter.get('/category/all', checkToken, getCategories);

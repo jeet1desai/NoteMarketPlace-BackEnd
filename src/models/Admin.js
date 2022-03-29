@@ -134,7 +134,7 @@ class Admin {
 
   async getAllCategory() {
     let query = `SELECT NoteCategories.ID, NoteCategories.Name, NoteCategories.Description,
-      NoteCategories.IsActive, NoteCategories.CreatedDate, Users.FirstName, Users.LastName
+      NoteCategories.IsActive, NoteCategories.ModifiedDate, Users.FirstName, Users.LastName
       FROM NoteCategories INNER JOIN Users ON NoteCategories.CreatedBy = Users.ID
     `;
     return this.pool.query(query);
@@ -142,6 +142,22 @@ class Admin {
 
   async getCategory(id) {
     let query = `SELECT ID, Name, Description FROM NoteCategories WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
+
+  async searchCategory(search) {
+    const isDate = moment(search, 'DD MMM YYYY', true).isValid();
+    let query = `SELECT NoteCategories.ID, NoteCategories.Name, NoteCategories.Description,
+      NoteCategories.IsActive, NoteCategories.ModifiedDate, Users.FirstName, Users.LastName
+      FROM NoteCategories INNER JOIN Users ON NoteCategories.CreatedBy = Users.ID
+      WHERE LOWER(Users.FirstName) LIKE '%${search}%' OR LOWER(Users.LastName) LIKE '%${search}%' 
+      OR LOWER(NoteCategories.Name) LIKE '%${search}%' 
+      OR LOWER(NoteCategories.Description) LIKE '%${search}%' 
+    `;
+    if (isDate) {
+      query += `OR DATE(NoteCategories.ModifiedDate) = '${search}' `;
+    }
+    query += ` ORDER BY NoteCategories.ID`;
     return this.pool.query(query);
   }
 

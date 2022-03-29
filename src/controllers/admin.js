@@ -132,6 +132,29 @@ export const getCategories = async (req, res) => {
   }
 };
 
+export const searchCategory = async (req, res) => {
+  const { id } = req;
+
+  try {
+    const admin = await adminModel.adminInfoByID(id);
+    if (admin.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ message: 'You are not valid user to perform task' });
+    }
+
+    console.log(req.query.search);
+
+    const categories = await adminModel.searchCategory(req.query.search);
+
+    return res.status(200).json(categories.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+};
+
 // Manage Type
 export const addType = async (req, res) => {
   const { id } = req;
@@ -263,7 +286,7 @@ export const getTypes = async (req, res) => {
   }
 };
 
-// // Manage Country
+// Manage Country
 export const addCountry = async (req, res) => {
   const { id } = req;
   const { name, code } = req.body;
