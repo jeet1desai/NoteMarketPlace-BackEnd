@@ -68,17 +68,6 @@ export const deleteSystemConfig = async (req, res) => {
   }
 };
 
-export const allCategory = async (req, res) => {
-  try {
-    const categories = await notModel.getAllCategories();
-    return res.status(200).json(categories.rows);
-  } catch (error) {
-    return res.status(500).json({
-      message: error.stack,
-    });
-  }
-}
-
 export const deleteCategory = async (req, res) => {
   const { id } = req.params;
   try {
@@ -94,17 +83,6 @@ export const deleteCategory = async (req, res) => {
   }
 };
 
-export const allType = async (req, res) => {
-  try {
-    const type = await notModel.getTypes();
-    return res.status(200).json(type.rows);
-  } catch (error) {
-    return res.status(500).json({
-      message: error.stack,
-    });
-  }
-}
-
 export const deleteType = async (req, res) => {
   const { id } = req.params;
   try {
@@ -119,17 +97,6 @@ export const deleteType = async (req, res) => {
     });
   }
 };
-
-export const allCountry = async (req, res) => {
-  try {
-    const country = await notModel.getCountry();
-    return res.status(200).json(country.rows);
-  } catch (error) {
-    return res.status(500).json({
-      message: error.stack,
-    });
-  }
-}
 
 export const deleteCountry = async (req, res) => {
   const { id } = req.params;

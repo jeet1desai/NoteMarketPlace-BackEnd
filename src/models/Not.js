@@ -34,28 +34,13 @@ class Not {
     return this.pool.query(query);
   }
 
-  async getAllCategories() {
-    let query = `SELECT * FROM NoteCategories ORDER BY ID`;
-    return this.pool.query(query);
-  }
-
   async deleteCategory(id) {
     let query = `DELETE FROM NoteCategories WHERE ID = ${id}`;
     return this.pool.query(query);
   }
 
-  async getTypes() {
-    let query = `SELECT * FROM NoteTypes ORDER BY ID`;
-    return this.pool.query(query);
-  }
-
   async deleteType(id) {
     let query = `DELETE FROM NoteTypes WHERE ID = ${id}`;
-    return this.pool.query(query);
-  }
-
-  async getCountry() {
-    let query = `SELECT * FROM Countries ORDER BY ID`;
     return this.pool.query(query);
   }
 
