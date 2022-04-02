@@ -42,21 +42,21 @@ adminRouter.delete('/:uid', checkToken, inactiveAdmin);
 adminRouter.get('/category/search', checkToken, searchCategory);
 adminRouter.post('/category', checkToken, addCategory);
 adminRouter.put('/category/:cid', checkToken, editCategory);
-adminRouter.get('/category/all', checkToken, getCategories);
+adminRouter.get('/category/all', getCategories);
 adminRouter.get('/category/:cid', checkToken, getCategory);
 adminRouter.delete('/category/:cid', checkToken, inactiveCategory);
 
 adminRouter.get('/type/search', checkToken, searchType);
 adminRouter.post('/type', checkToken, addType);
 adminRouter.put('/type/:tid', checkToken, editType);
-adminRouter.get('/type/all', checkToken, getTypes);
+adminRouter.get('/type/all', getTypes);
 adminRouter.get('/type/:tid', checkToken, getType);
 adminRouter.delete('/type/:tid', checkToken, inactiveType);
 
 adminRouter.get('/country/search',checkToken, searchCountry);
 adminRouter.post('/country', checkToken, addCountry);
 adminRouter.put('/country/:cid', checkToken, editCountry);
-adminRouter.get('/country/all', checkToken, getCountries);
+adminRouter.get('/country/all', getCountries);
 adminRouter.get('/country/:cid', checkToken, getCountry);
 adminRouter.delete('/country/:cid', checkToken, inactiveCountry);
 

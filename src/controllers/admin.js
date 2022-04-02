@@ -24,7 +24,7 @@ export const addCategory = async (req, res) => {
     return res.status(200).json(category.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -56,7 +56,7 @@ export const editCategory = async (req, res) => {
     return res.status(200).json(category.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -80,7 +80,7 @@ export const getCategory = async (req, res) => {
     return res.status(200).json(category.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -104,22 +104,13 @@ export const inactiveCategory = async (req, res) => {
     return res.status(200).json(category.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
 
 export const getCategories = async (req, res) => {
-  const { id } = req;
-
   try {
-    const admin = await adminModel.adminInfoByID(id);
-    if (admin.rowCount === 0) {
-      return res
-        .status(404)
-        .json({ message: 'You are not valid user to perform task' });
-    }
-
     const categories = await adminModel.getAllCategory();
     if (categories.rowCount === 0) {
       return res.status(404).json({ message: 'Categories unavailable' });
@@ -127,7 +118,7 @@ export const getCategories = async (req, res) => {
     return res.status(200).json(categories.rows);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -148,7 +139,7 @@ export const searchCategory = async (req, res) => {
     return res.status(200).json(categories.rows);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -176,7 +167,7 @@ export const addType = async (req, res) => {
     return res.status(200).json(type.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -208,7 +199,7 @@ export const editType = async (req, res) => {
     return res.status(200).json(type.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -232,7 +223,7 @@ export const getType = async (req, res) => {
     return res.status(200).json(type.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -256,22 +247,13 @@ export const inactiveType = async (req, res) => {
     return res.status(200).json(type.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
 
 export const getTypes = async (req, res) => {
-  const { id } = req;
-
   try {
-    const admin = await adminModel.adminInfoByID(id);
-    if (admin.rowCount === 0) {
-      return res
-        .status(404)
-        .json({ message: 'You are not valid user to perform task' });
-    }
-
     const types = await adminModel.getAllType();
     if (types.rowCount === 0) {
       return res.status(404).json({ message: 'Types unavailable' });
@@ -279,7 +261,7 @@ export const getTypes = async (req, res) => {
     return res.status(200).json(types.rows);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -300,7 +282,7 @@ export const searchType = async (req, res) => {
     return res.status(200).json(types.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -328,7 +310,7 @@ export const addCountry = async (req, res) => {
     return res.status(200).json(country.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -360,7 +342,7 @@ export const editCountry = async (req, res) => {
     return res.status(200).json(country.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -384,7 +366,7 @@ export const getCountry = async (req, res) => {
     return res.status(200).json(country.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
@@ -408,22 +390,13 @@ export const inactiveCountry = async (req, res) => {
     return res.status(200).json(country.rows[0]);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
 
 export const getCountries = async (req, res) => {
-  const { id } = req;
-
   try {
-    const admin = await adminModel.adminInfoByID(id);
-    if (admin.rowCount === 0) {
-      return res
-        .status(404)
-        .json({ message: 'You are not valid user to perform task' });
-    }
-
     const countries = await adminModel.getAllCountry();
     if (countries.rowCount === 0) {
       return res.status(404).json({ message: 'Countries unavailable' });
@@ -431,11 +404,10 @@ export const getCountries = async (req, res) => {
     return res.status(200).json(countries.rows);
   } catch (error) {
     return res.status(500).json({
-      message: error.stack,
+      message: 'Something went wrong!',
     });
   }
 };
-
 
 export const searchCountry = async (req, res) => {
   const { id } = req;
@@ -453,7 +425,7 @@ export const searchCountry = async (req, res) => {
     return res.status(200).json(countries.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
