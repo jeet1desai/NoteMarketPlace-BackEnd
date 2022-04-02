@@ -143,8 +143,6 @@ export const searchCategory = async (req, res) => {
         .json({ message: 'You are not valid user to perform task' });
     }
 
-    console.log(req.query.search);
-
     const categories = await adminModel.searchCategory(req.query.search);
 
     return res.status(200).json(categories.rows);
@@ -286,6 +284,27 @@ export const getTypes = async (req, res) => {
   }
 };
 
+export const searchType = async (req, res) => {
+  const { id } = req;
+
+  try {
+    const admin = await adminModel.adminInfoByID(id);
+    if (admin.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ message: 'You are not valid user to perform task' });
+    }
+
+    const types = await adminModel.searchType(req.query.search);
+
+    return res.status(200).json(types.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong!",
+    });
+  }
+};
+
 // Manage Country
 export const addCountry = async (req, res) => {
   const { id } = req;
@@ -413,6 +432,28 @@ export const getCountries = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: error.stack,
+    });
+  }
+};
+
+
+export const searchCountry = async (req, res) => {
+  const { id } = req;
+
+  try {
+    const admin = await adminModel.adminInfoByID(id);
+    if (admin.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ message: 'You are not valid user to perform task' });
+    }
+
+    const countries = await adminModel.searchCountry(req.query.search);
+
+    return res.status(200).json(countries.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong!",
     });
   }
 };

@@ -193,7 +193,7 @@ class Admin {
 
   async getAllType() {
     let query = `SELECT NoteTypes.ID, NoteTypes.Name, NoteTypes.Description, NoteTypes.IsActive, 
-      NoteTypes.CreatedDate, Users.FirstName, Users.LastName FROM NoteTypes INNER JOIN Users 
+      NoteTypes.ModifiedDate, Users.FirstName, Users.LastName FROM NoteTypes INNER JOIN Users 
       ON NoteTypes.CreatedBy = Users.ID
     `;
     return this.pool.query(query);
@@ -211,6 +211,22 @@ class Admin {
       RETURNING NoteTypes.ID, NoteTypes.Name, NoteTypes.Description, NoteTypes.IsActive, 
         NoteTypes.CreatedDate, Users.FirstName, Users.LastName
     `;
+    return this.pool.query(query);
+  }
+
+  async searchType(search) {
+    const isDate = moment(search, 'DD MMM YYYY', true).isValid();
+    let query = `SELECT NoteTypes.ID, NoteTypes.Name, NoteTypes.Description, NoteTypes.IsActive, 
+      NoteTypes.ModifiedDate, Users.FirstName, Users.LastName FROM NoteTypes INNER JOIN Users 
+      ON NoteTypes.CreatedBy = Users.ID
+      WHERE LOWER(Users.FirstName) LIKE '%${search}%' OR LOWER(Users.LastName) LIKE '%${search}%' 
+      OR LOWER(NoteTypes.Name) LIKE '%${search}%' 
+      OR LOWER(NoteTypes.Description) LIKE '%${search}%' 
+    `;
+    if (isDate) {
+      query += `OR DATE(NoteTypes.ModifiedDate) = '${search}' `;
+    }
+    query += ` ORDER BY NoteTypes.ID`;
     return this.pool.query(query);
   }
 
@@ -235,9 +251,25 @@ class Admin {
 
   async getAllCountry() {
     let query = `SELECT Countries.ID, Countries.Name, Countries.CountryCode, Countries.IsActive,
-      Countries.CreatedDate, Users.FirstName, Users.LastName FROM Countries INNER JOIN Users
+      Countries.ModifiedDate, Users.FirstName, Users.LastName FROM Countries INNER JOIN Users
       ON Countries.CreatedBy = Users.ID
     `;
+    return this.pool.query(query);
+  }
+
+  async searchCountry(search) {
+    const isDate = moment(search, 'DD MMM YYYY', true).isValid();
+    let query = `SELECT Countries.ID, Countries.Name, Countries.CountryCode, Countries.IsActive,
+      Countries.ModifiedDate, Users.FirstName, Users.LastName FROM Countries INNER JOIN Users
+      ON Countries.CreatedBy = Users.ID
+      WHERE LOWER(Users.FirstName) LIKE '%${search}%' OR LOWER(Users.LastName) LIKE '%${search}%' 
+      OR LOWER(Countries.Name) LIKE '%${search}%' 
+      OR LOWER(Countries.CountryCode) LIKE '%${search}%' 
+    `;
+    if (isDate) {
+      query += `OR DATE(Countries.ModifiedDate) = '${search}' `;
+    }
+    query += ` ORDER BY Countries.ID`;
     return this.pool.query(query);
   }
 
