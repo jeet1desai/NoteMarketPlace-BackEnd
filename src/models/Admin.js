@@ -86,9 +86,24 @@ class Admin {
 
   async getAllAdmin() {
     let query = `SELECT 
-      ID, RoleID, FirstName, LastName, Email, IsActive, CreatedDate, PhoneCountryCode, PhoneNumber 
+      ID, RoleID, FirstName, LastName, Email, IsActive, ModifiedDate, PhoneCountryCode, PhoneNumber 
       FROM Users WHERE RoleID = 2 ORDER BY ID
     `;
+    return this.pool.query(query);
+  }
+
+  async searchAdmin(search) {
+    const isDate = moment(search, 'DD MMM YYYY', true).isValid();
+    let query = `SELECT 
+      ID, RoleID, FirstName, LastName, Email, IsActive, ModifiedDate, PhoneCountryCode, PhoneNumber 
+      FROM Users WHERE RoleID = 2 AND LOWER(FirstName) LIKE '%${search}%' 
+      OR LOWER(LastName) LIKE '%${search}%' OR LOWER(Email) LIKE '%${search}%' 
+      OR LOWER(PhoneNumber) LIKE '%${search}%' OR LOWER(PhoneCountryCode) LIKE '%${search}%'
+    `;
+    if (isDate) {
+      query += `OR DATE(ModifiedDate) = '${search}' `;
+    }
+    query += ` ORDER BY ID`;
     return this.pool.query(query);
   }
 

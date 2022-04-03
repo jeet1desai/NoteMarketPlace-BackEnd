@@ -142,7 +142,10 @@ export const editAdmin = async (req, res) => {
     }
 
     const checkIfAdminExist = await adminModel.getAdminInfoByID(uid);
-    if (checkIfAdminExist.rowCount === 0 || checkIfAdminExist.rows[0].email !== email) {
+    if (
+      checkIfAdminExist.rowCount === 0 ||
+      checkIfAdminExist.rows[0].email !== email
+    ) {
       return res.status(404).json({
         message: 'This admin is not available',
       });
@@ -240,6 +243,27 @@ export const inactiveAdmin = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: error.stack,
+    });
+  }
+};
+
+export const searchAdmin = async (req, res) => {
+  const { id } = req;
+
+  try {
+    const sAdmin = await adminModel.getSAdminInfoByID(id);
+    if (sAdmin.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ message: 'You are not valid user to perform task' });
+    }
+
+    const admin = await adminModel.searchAdmin(req.query.search);
+
+    return res.status(200).json(admin.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Something went wrong!',
     });
   }
 };
