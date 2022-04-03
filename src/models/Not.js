@@ -53,6 +53,12 @@ class Not {
     let query = `SELECT * FROM SellerNotes ORDER BY ID`;
     return this.pool.query(query);
   }
+
+  async deleteNote(id) {
+    let query = `DELETE FROM SellerNotes WHERE ID = ${id}`;
+    console.log(query);
+    return this.pool.query(query);
+  }
 }
 
 export default Not;

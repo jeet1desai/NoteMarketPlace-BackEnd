@@ -4,6 +4,7 @@ import {
   allSystemConfig,
   deleteCategory,
   deleteCountry,
+  deleteNote,
   deleteSystemConfig,
   deleteType,
   deleteUser,
@@ -28,5 +29,6 @@ router.delete('/type/:id', deleteType);
 router.delete('/country/:id', deleteCountry);
 
 router.get('/notes', getAllNotes);
+router.delete('/notes/:id', deleteNote);
 
 export default router;
