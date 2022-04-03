@@ -48,6 +48,11 @@ class Not {
     let query = `DELETE FROM Countries WHERE ID = ${id}`;
     return this.pool.query(query);
   }
+
+  async getAllNotes() {
+    let query = `SELECT * FROM SellerNotes ORDER BY ID`;
+    return this.pool.query(query);
+  }
 }
 
 export default Not;

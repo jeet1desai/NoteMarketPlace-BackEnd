@@ -112,3 +112,14 @@ export const deleteCountry = async (req, res) => {
     });
   }
 };
+
+export const getAllNotes = async (req, res) => {
+  try {
+    const notes = await notModel.getAllNotes();
+    return res.status(200).json(notes.rows);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.stack,
+    });
+  }
+};
