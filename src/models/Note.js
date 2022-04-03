@@ -16,6 +16,11 @@ class Note {
     return this.pool.query(query);
   }
 
+  async getNoteInfoByID(id) {
+    let query = `SELECT * FROM SellerNotes WHERE ID = ${id}`;
+    return this.pool.query(query);
+  }
+
   async addNote(note, user) {
     const time = moment().format();
     const {
@@ -47,6 +52,40 @@ class Note {
         ${ispaid}, ${sellingprice}, '${status}', '${notespreview}', '${filename}',
         '${file}', '${filesize}', ${country}, ${notetype},
         ${category}, ${user}, '${time}', ${user}, '${time}', ${user},  ${true}) RETURNING *
+    `;
+    return this.pool.query(query);
+  }
+
+  async editNote(note, user, noteId) {
+    const time = moment().format();
+    const {
+      title,
+      displaypicture,
+      numberofpages,
+      description,
+      universityname,
+      course,
+      coursecode,
+      professor,
+      ispaid,
+      sellingprice,
+      status,
+      notespreview,
+      filename,
+      file,
+      filesize,
+      country,
+      notetype,
+      category,
+    } = note;
+    let query = `UPDATE SellerNotes SET 
+      Title = '${title}', DisplayPicture = '${displaypicture}', NumberofPages = ${numberofpages}, 
+      Description = '${description}', UniversityName = '${universityname}', Course = '${course}', 
+      CourseCode = '${coursecode}', Professor = '${professor}', IsPaid = ${ispaid}, 
+      SellingPrice = ${sellingprice}, Status = '${status}', NotesPreview = '${notespreview}', 
+      FileName = '${filename}', File = '${file}', FileSize = '${filesize}', Country = ${country}, 
+      NoteType = ${notetype}, Category = '${category}', SellerID = ${user}, ModifiedDate = '${time}', 
+      ModifiedBy = ${user} WHERE ID = ${noteId} RETURNING *
     `;
     return this.pool.query(query);
   }
