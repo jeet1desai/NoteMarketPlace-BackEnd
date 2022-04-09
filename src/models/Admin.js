@@ -302,6 +302,47 @@ class Admin {
     `;
     return this.pool.query(query);
   }
+
+  // Dashboard
+  async getStatInReviewNote() {
+    let query = `SELECT COUNT(*) FROM SellerNotes WHERE Status = 'In Review'`;
+    return this.pool.query(query);
+  }
+
+  async getStatDownloadedNote() {
+    let query = `SELECT COUNT(*) FROM Downloads WHERE ModifiedDate > CURRENT_DATE - 7`;
+    return this.pool.query(query);
+  }
+
+  async getStatNewRegistration() {
+    let query = `SELECT COUNT(*) FROM Users WHERE CreatedDate > CURRENT_DATE - 7`;
+    return this.pool.query(query);
+  }
+  
+  async publishedNotes(month, search) {
+    const isDate = moment(search, 'DD MMM YYYY', true).isValid();
+    let query = `SELECT SellerNotes.ID, SellerNotes.Title, SellerNotes.FileSize, SellerNotes.IsPaid, 
+      SellerNotes.Status, SellerNotes.SellingPrice, SellerNotes.ModifiedDate, NoteCategories.Name, 
+      Users.FirstName, Users.LastName, (SELECT COUNT(*) FROM Downloads WHERE 
+        Downloads.NoteID = SellerNotes.ID AND 
+        (Downloads.CreatedDate > CURRENT_DATE - INTERVAL '${month} months')
+      ) FROM SellerNotes INNER JOIN NoteCategories ON SellerNotes.Category = NoteCategories.ID
+      INNER JOIN Users ON SellerNotes.SellerID = Users.ID WHERE (
+        (SellerNotes.ModifiedDate > CURRENT_DATE - INTERVAL '${month} months') AND SellerNotes.Status = 'Published'
+      ) AND (LOWER(Users.FirstName) LIKE '%${search}%' 
+      OR LOWER(Users.LastName) LIKE '%${search}%' OR LOWER(SellerNotes.Title) LIKE '%${search}%' 
+      OR LOWER(SellerNotes.FileSize) LIKE '%${search}%' OR LOWER(NoteCategories.Name) LIKE '%${search}%'
+    `;
+    if(parseInt(search)){
+      query += ` OR SellerNotes.SellingPrice = ${search} `;
+    }
+    if (isDate) {
+      query += ` OR DATE(SellerNotes.ModifiedDate) = '${search}' `;
+    }
+    query += `) ORDER BY SellerNotes.ID`;
+    return this.pool.query(query);
+  }
+  
 }
 
 export default Admin;
