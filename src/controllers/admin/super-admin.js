@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 
-import Admin from '../models/Admin';
-import { aEmail } from '../settings';
-import { checkSystemConfigForm, isEmail } from '../validation';
-import { sAdminTransport } from '../helper';
-import { TAddAdminEmail } from '../templates';
+import Admin from '../../models/Admin';
+import { aEmail } from '../../settings';
+import { checkSystemConfigForm, isEmail } from '../../validation';
+import { sAdminTransport } from '../../helper';
+import { TAddAdminEmail } from '../../templates';
 
 const adminModel = new Admin();
 

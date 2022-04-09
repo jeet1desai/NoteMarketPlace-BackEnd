@@ -28,8 +28,8 @@ import {
   searchType,
   searchCountry,
   searchAdmin,
-} from '../controllers';
-import { checkToken } from '../middleware';
+} from '../../controllers';
+import { checkToken } from '../../middleware';
 
 adminRouter.get('/system-config', checkToken, getSystemConfig);
 adminRouter.post('/system-config', checkToken, addSystemConfig);
