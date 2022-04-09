@@ -55,7 +55,7 @@ adminRouter.get('/type/all', getTypes);
 adminRouter.get('/type/:tid', checkToken, getType);
 adminRouter.delete('/type/:tid', checkToken, inactiveType);
 
-adminRouter.get('/country/search',checkToken, searchCountry);
+adminRouter.get('/country/search', checkToken, searchCountry);
 adminRouter.post('/country', checkToken, addCountry);
 adminRouter.put('/country/:cid', checkToken, editCountry);
 adminRouter.get('/country/all', getCountries);

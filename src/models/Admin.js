@@ -318,7 +318,7 @@ class Admin {
     let query = `SELECT COUNT(*) FROM Users WHERE CreatedDate > CURRENT_DATE - 7`;
     return this.pool.query(query);
   }
-  
+
   async publishedNotes(month, search) {
     const isDate = moment(search, 'DD MMM YYYY', true).isValid();
     let query = `SELECT SellerNotes.ID, SellerNotes.Title, SellerNotes.FileSize, SellerNotes.IsPaid, 
@@ -333,7 +333,7 @@ class Admin {
       OR LOWER(Users.LastName) LIKE '%${search}%' OR LOWER(SellerNotes.Title) LIKE '%${search}%' 
       OR LOWER(SellerNotes.FileSize) LIKE '%${search}%' OR LOWER(NoteCategories.Name) LIKE '%${search}%'
     `;
-    if(parseInt(search)){
+    if (parseInt(search)) {
       query += ` OR SellerNotes.SellingPrice = ${search} `;
     }
     if (isDate) {
@@ -342,7 +342,6 @@ class Admin {
     query += `) ORDER BY SellerNotes.ID`;
     return this.pool.query(query);
   }
-  
 }
 
 export default Admin;

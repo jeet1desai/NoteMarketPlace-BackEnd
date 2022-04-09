@@ -84,7 +84,7 @@ export const register = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      profileImage
+      profileImage,
     };
     const user = await authModel.register(value);
 

@@ -1,4 +1,4 @@
-import Not from "../models/Not";
+import Not from '../models/Not';
 
 const notModel = new Not();
 
@@ -8,7 +8,7 @@ export const getAllUsers = async (req, res) => {
     return res.status(200).json(users.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -20,7 +20,7 @@ export const getUsersByRoleID = async (req, res) => {
     return res.status(200).json(users.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -37,7 +37,7 @@ export const deleteUser = async (req, res) => {
     return res.status(200).json({ message: 'Deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -48,10 +48,10 @@ export const allSystemConfig = async (req, res) => {
     return res.status(200).json(configs.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
-}
+};
 
 export const deleteSystemConfig = async (req, res) => {
   const { id } = req.params;
@@ -63,7 +63,7 @@ export const deleteSystemConfig = async (req, res) => {
     return res.status(200).json({ message: 'Deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -78,7 +78,7 @@ export const deleteCategory = async (req, res) => {
     return res.status(200).json({ message: 'Deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -93,7 +93,7 @@ export const deleteType = async (req, res) => {
     return res.status(200).json({ message: 'Deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -108,7 +108,7 @@ export const deleteCountry = async (req, res) => {
     return res.status(200).json({ message: 'Deleted successfully' });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
@@ -119,7 +119,7 @@ export const getAllNotes = async (req, res) => {
     return res.status(200).json(notes.rows);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
