@@ -19,7 +19,7 @@ class Auth {
   async register({ firstName, lastName, email, password, profileImage }) {
     const time = moment().format();
     let query = `INSERT INTO 
-      users(RoleID, FirstName, LastName, Email, Password, IsEmailVerified, ProfilePicture
+      users(RoleID, FirstName, LastName, Email, Password, IsEmailVerified, ProfilePicture, 
         CreatedDate, ModifiedDate, IsActive) 
       VALUES(${1}, '${firstName}', '${lastName}', '${email}', '${password.toString()}', ${false}, 
         '${profileImage}', '${time}', '${time}', ${true}) RETURNING *

@@ -139,7 +139,7 @@ export const sendEmail = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: error.stack,
+      message: "Something went wrong!",
     });
   }
 };
