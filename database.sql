@@ -4,7 +4,7 @@ CREATE TABLE Users(
 	FirstName varchar(50) not null,
 	LastName varchar(50) not null,
 	Email varchar(100) not null unique,
-	Password varchar(24) not null,
+	Password varchar(500) not null,
 	IsEmailVerified Boolean not null default false,
 	DOB TIMESTAMP,
 	Gender varchar(10),
