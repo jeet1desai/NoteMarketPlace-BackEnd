@@ -23,7 +23,9 @@ CREATE TABLE Users(
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE Countries(
@@ -34,7 +36,9 @@ CREATE TABLE Countries(
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE NoteCategories(
@@ -45,7 +49,9 @@ CREATE TABLE NoteCategories(
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE NoteTypes(
@@ -56,7 +62,9 @@ CREATE TABLE NoteTypes(
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE SellerNotes(
@@ -79,20 +87,22 @@ CREATE TABLE SellerNotes(
 	File varchar(255) not null,
 	FileSize varchar(25) not null,
 	Country int,
-	FOREIGN KEY (Country) REFERENCES Countries(ID),
 	NoteType int,
-	FOREIGN KEY (NoteType) REFERENCES NoteTypes(ID),
 	Category int not null,
-	FOREIGN KEY (Category) REFERENCES NoteCategories(ID),
 	SellerID int not null,
-	FOREIGN KEY (SellerID) REFERENCES Users(ID),
 	ActionedBy int,
-	FOREIGN KEY (ActionedBy) REFERENCES Users(ID),
 	CreatedDate TIMESTAMP,
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_country FOREIGN KEY(Country) REFERENCES Countries(ID),
+	CONSTRAINT fk_note_type FOREIGN KEY(NoteType) REFERENCES NoteTypes(ID),
+	CONSTRAINT fk_category FOREIGN KEY(Category) REFERENCES NoteCategories(ID),
+	CONSTRAINT fk_seller_id FOREIGN KEY(SellerID) REFERENCES Users(ID),
+	CONSTRAINT fk_action_by FOREIGN KEY(ActionedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE Downloads(
@@ -100,9 +110,6 @@ CREATE TABLE Downloads(
 	NoteID int not null,
 	Seller int not null,
 	Downloader int not null,
-	FOREIGN KEY (NoteID) REFERENCES SellerNotes(ID),
-	FOREIGN KEY (Seller) REFERENCES Users(ID),
-	FOREIGN KEY (Downloader) REFERENCES Users(ID),
 	IsSellerHasAllowedDownload Boolean not null,
 	AttachmentPath varchar(255),
 	IsAttachmentDownloaded Boolean not null,
@@ -114,7 +121,12 @@ CREATE TABLE Downloads(
 	CreatedDate TIMESTAMP,
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
-	ModifiedBy int
+	ModifiedBy int,
+	CONSTRAINT fk_downloader_id FOREIGN KEY(Downloader) REFERENCES Users(ID),
+	CONSTRAINT fk_seller FOREIGN KEY(Seller) REFERENCES Users(ID),
+	CONSTRAINT fk_note_id FOREIGN KEY(NoteID) REFERENCES SellerNotes(ID),
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE SellerNotesReviews(
@@ -122,16 +134,18 @@ CREATE TABLE SellerNotesReviews(
 	NoteID int not null,
 	ReviewedByID int not null,
 	AgainstDownloadsID int not null,
-	FOREIGN KEY (NoteID) REFERENCES SellerNotes(ID),
-	FOREIGN KEY (ReviewedByID) REFERENCES Users(ID),
-	FOREIGN KEY (AgainstDownloadsID) REFERENCES Downloads(ID),
 	Ratings Numeric not null,
 	Comments varchar(255) not null,
 	CreatedDate TIMESTAMP,
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_review_id FOREIGN KEY(ReviewedByID) REFERENCES Users(ID),
+	CONSTRAINT fk_download_id FOREIGN KEY(AgainstDownloadsID) REFERENCES Downloads(ID),
+	CONSTRAINT fk_note_id FOREIGN KEY(NoteID) REFERENCES SellerNotes(ID),
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE SellerNotesReportedIssues(
@@ -139,14 +153,16 @@ CREATE TABLE SellerNotesReportedIssues(
 	NoteID int not null,
 	ReportedByID int not null,
 	AgainstDownloadID int not null,
-	FOREIGN KEY (NoteID) REFERENCES SellerNotes(ID),
-	FOREIGN KEY (ReportedByID) REFERENCES Users(ID),
-	FOREIGN KEY (AgainstDownloadID) REFERENCES Downloads(ID),
 	Remarks varchar(255) not null,
 	CreatedDate TIMESTAMP,
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
-	ModifiedBy int
+	ModifiedBy int,
+	CONSTRAINT fk_reporter_id FOREIGN KEY(ReportedByID) REFERENCES Users(ID),
+	CONSTRAINT fk_download_id FOREIGN KEY(AgainstDownloadsID) REFERENCES Downloads(ID),
+	CONSTRAINT fk_note_id FOREIGN KEY(NoteID) REFERENCES SellerNotes(ID),
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 CREATE TABLE SystemConfigurations(
@@ -162,7 +178,9 @@ CREATE TABLE SystemConfigurations(
 	CreatedBy int,
 	ModifiedDate TIMESTAMP,
 	ModifiedBy int,
-	IsActive Boolean not null default true
+	IsActive Boolean not null default true,
+	CONSTRAINT fk_created_by FOREIGN KEY(CreatedBy) REFERENCES Users(ID),
+	CONSTRAINT fk_modified_by FOREIGN KEY(ModifiedBy) REFERENCES Users(ID)
 )
 
 SELECT * FROM users WHERE email = 'email'

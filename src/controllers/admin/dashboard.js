@@ -43,9 +43,9 @@ export const publishedNotes = async (req, res) => {
         .json({ message: 'You are not valid user to perform task' });
     }
 
-    const publishedNotes = await adminModel.publishedNotes(month, search);
+    // const publishedNotes = await adminModel.publishedNotes(month, search);
 
-    return res.status(200).json(publishedNotes.rows);
+    // return res.status(200).json({});
   } catch (error) {
     return res.status(500).json({
       message: 'Something went wrong!',
