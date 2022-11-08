@@ -102,7 +102,7 @@ export const register = async (req, res) => {
         role: user.rows[0].roleid,
         isEmailVerified: user.rows[0].isemailverified,
         isActive: user.rows[0].isactive,
-        profilePicture: user.rows[0].profilepicture,
+        // profilePicture: user.rows[0].profilepicture,
       },
     };
     return res.status(200).json(resp);
@@ -139,7 +139,7 @@ export const sendEmail = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Something went wrong!",
+      message: 'Something went wrong!',
     });
   }
 };
